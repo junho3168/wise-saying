@@ -8,9 +8,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("== 명언 앱 ==");
 
-        List<Quote> quotes = new ArrayList<>(); // 명언 저장 리스트
+        List<Quote> quotes = new ArrayList<>(); // 명언 리스트
         Scanner scanner = new Scanner(System.in);
-        int quoteId = 1; // 고유 번호 관리 변수
+        int quoteId = 1; // 고유 번호
 
         while (true) {
             System.out.print("명령) ");
@@ -35,7 +35,7 @@ public class Main {
                 } else {
                     System.out.println("번호 / 작가 / 명언");
                     System.out.println("----------------------");
-                    for (int i = quotes.size() - 1; i >= 0; i--) { // 최신 등록 순서로 출력
+                    for (int i = quotes.size() - 1; i >= 0; i--) { // 최신 순서로 출력
                         Quote quote = quotes.get(i);
                         System.out.printf("%d / %s / %s\n", quote.getId(), quote.getAuthor(), quote.getContent());
                     }
@@ -56,10 +56,43 @@ public class Main {
                     }
 
                     if (!found) {
-                        System.out.println(idToDelete + "번 명언이 존재하지 않습니다.");
+                        System.out.println(idToDelete + "번 명언은 존재하지 않습니다.");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("잘못된 형식입니다. 예: 삭제?id=1");
+                }
+            } else if (cmd.startsWith("수정?id=")) {
+                // 수정 명령 처리
+                try {
+                    int idToModify = Integer.parseInt(cmd.split("=")[1]); // 수정할 ID 추출
+                    Quote foundQuote = null;
+
+                    for (Quote quote : quotes) {
+                        if (quote.getId() == idToModify) {
+                            foundQuote = quote;
+                            break;
+                        }
+                    }
+
+                    if (foundQuote == null) {
+                        System.out.println(idToModify + "번 명언은 존재하지 않습니다.");
+                    } else {
+                        // 기존 명언과 작가 출력
+                        System.out.println("명언(기존) : " + foundQuote.getContent());
+                        System.out.print("명언 : ");
+                        String newContent = scanner.nextLine().trim();
+
+                        System.out.println("작가(기존) : " + foundQuote.getAuthor());
+                        System.out.print("작가 : ");
+                        String newAuthor = scanner.nextLine().trim();
+
+                        // 수정
+                        foundQuote.setContent(newContent);
+                        foundQuote.setAuthor(newAuthor);
+                        System.out.println(idToModify + "번 명언이 수정되었습니다.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("잘못된 형식입니다. 예: 수정?id=1");
                 }
             } else {
                 System.out.println("알 수 없는 명령입니다.");
@@ -90,7 +123,15 @@ class Quote {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getAuthor() {
         return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
