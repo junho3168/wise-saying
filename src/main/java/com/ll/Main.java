@@ -6,7 +6,6 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        int age = 50;
         App app = new App();
         app.run();
     }
@@ -19,11 +18,19 @@ class App {
         //스캐너 생성 (키보드 입력 스캔, 파이썬 인풋같은거)
         Scanner scanner = new Scanner(System.in);
 
+        while ( true ){
+            System.out.print("명령) ");
+            String cmd = scanner.nextLine();
 
-        System.out.print("명령) ");
-        String cmd = scanner.nextLine();
+            if(cmd.equals("종료")) {
+                break;
 
-        System.out.println("입력된 명령어 : %s".formatted(cmd));
+            }
+
+        }
+
+
+
 
         scanner.close();
         System.out.println("종료합니다");
